@@ -31,44 +31,32 @@
 
 /**
  * \file
- *      Collection of default configuration values.
+ *      Example resource
  * \author
  *      Matthias Kovatsch <kovatsch@inf.ethz.ch>
  */
 
-#ifndef ER_COAP_CONF_H_
-#define ER_COAP_CONF_H_
+#include <stdlib.h>
+#include <string.h>
+#include "rest-engine.h"
+#include "sensor.h"
+static void res_get_handler(void *request, void *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset);
 
-/* Features that can be disabled to achieve smaller memory footprint */
-#define COAP_LINK_FORMAT_FILTERING     0
-#define COAP_PROXY_OPTION_PROCESSING   0
+/*
+ * A handler function named [resource name]_handler must be implemented for each RESOURCE.
+ * A buffer for the response payload is provided through the buffer pointer. Simple resources can ignore
+ * preferred_size and offset, but must respect the REST_MAX_CHUNK_SIZE limit for the buffer.
+ * If a smaller block size is requested for CoAP, the REST framework automatically splits the data.
+ */
+RESOURCE(res_handshake,"title=\"Handshake\"",res_get_handler,NULL,NULL,NULL);
 
-/* Listening port for the CoAP REST Engine */
-#ifndef COAP_SERVER_PORT
-#define COAP_SERVER_PORT               COAP_DEFAULT_PORT
-#endif
-
-/* The number of concurrent messages that can be stored for retransmission in the transaction layer. */
-#ifndef COAP_MAX_OPEN_TRANSACTIONS
-#define COAP_MAX_OPEN_TRANSACTIONS     9
-#endif /* COAP_MAX_OPEN_TRANSACTIONS */
-
-/* Maximum number of failed request attempts before action */
-#ifndef COAP_MAX_ATTEMPTS
-#define COAP_MAX_ATTEMPTS              4
-#endif /* COAP_MAX_ATTEMPTS */
-
-/* Conservative size limit, as not all options have to be set at the same time. Check when Proxy-Uri option is used */
-#ifndef COAP_MAX_HEADER_SIZE    /*     Hdr                  CoF  If-Match         Obs Blo strings   */
-#define COAP_MAX_HEADER_SIZE           (4 + COAP_TOKEN_LEN + 3 + 1 + COAP_ETAG_LEN + 4 + 4 + 30)  /* 65 */
-#endif /* COAP_MAX_HEADER_SIZE */
-
-/* Number of observer slots (each takes abot xxx bytes) */
-#ifndef COAP_MAX_OBSERVERS
-#define COAP_MAX_OBSERVERS    COAP_MAX_OPEN_TRANSACTIONS - 1
-#endif /* COAP_MAX_OBSERVERS */
-
-/* Interval in notifies in which NON notifies are changed to CON notifies to check client. */
-#define COAP_OBSERVE_REFRESH_INTERVAL  20
-
-#endif /* ER_COAP_CONF_H_ */
+static void
+res_get_handler(void *request, void *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset)
+{
+  const char *len = NULL;
+  /* Some data that has the length up to REST_MAX_CHUNK_SIZE. For more, see the chunk resource. */
+  char const *const message = get_device_status();
+  REST.set_header_content_type(response, REST.type.APPLICATION_JSON); /* text/plain is the default, hence this option could be omitted. */
+  //REST.set_header_etag(response, (uint8_t *)&length, 1);
+  REST.set_response_payload(response, message, strlen(message));
+}

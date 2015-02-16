@@ -1,0 +1,9 @@
+Steps
+
+1- cd contiki/example/newton
+2- make TARGET=cooja newton.csc
+3- open another tab and cd contiki/example/ipv6/rpl-border-router
+4- make connect-router-cooja
+5- start the simulation ("check the socket 60001 get connected")
+6- for the mote addresses refer "adresses file" newton folder, webserver is under construction so dont use that to get mote addresses, for the time being use pre-saved addresses.
+
