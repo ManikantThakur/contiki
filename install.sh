@@ -119,8 +119,6 @@ if [[ ! -e $DIR ]]; then
         echo " "
         printf "\e[1;32m\tDirectory : [ contiki ] already exists...\e[0m\n"
 
-        pwd
-        echo $DIR
         cd $DIR
         echo ""
         echo ""
