@@ -133,6 +133,13 @@ else
 
     echo ""
     printf "\e[1;31m\tIf cloning was not sucessfull, delete $DIR and re-run this script...\e[0m\n"
+
+    echo ""
+    cd $C_DIR
+    printf "\e[1;33m**  Updating repo...\e[0m\n"
+    echo ""
+    git pull   
+
 fi
 
 echo ""
