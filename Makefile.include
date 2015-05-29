@@ -1,5 +1,7 @@
 # -*- makefile -*-
 
+TARGET=cc2538dk
+
 ifndef CONTIKI
   ${error CONTIKI not defined! You must specify where Contiki resides}
 endif
