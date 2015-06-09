@@ -1,8 +1,10 @@
 #include "contiki.h"
+#include "net/ip/uip-debug.h"
 
 #define COAPSERVER 1 
 
-PROCESS(demo_newton_process, "6LBR Demo");
+//PROCESS_NAME(udp_client_process);
+PROCESS(demo_newton_process, "Thinqbot Newton");
 AUTOSTART_PROCESSES(&demo_newton_process);
 #if COAPSERVER
 PROCESS_NAME(thinqbot_server);
@@ -19,9 +21,9 @@ start_apps(void)
 PROCESS_THREAD(demo_newton_process, ev, data)
 {
   PROCESS_BEGIN();
-      
-           start_apps();
-
+  //PRINTF("Starting udp_client_process\n");
+  //process_start(&udp_client_process,NULL);
+  start_apps();
   PROCESS_END();
 }
 /*---------------------------------------------------------------------------*/

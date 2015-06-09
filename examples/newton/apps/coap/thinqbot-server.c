@@ -61,6 +61,8 @@
 /*-----------------------------------------------------------------------------------------------*/
 extern resource_t res_handshake,res_event_sen0,res_event_sen1,res_event_sen2,res_event_sen3,res_event_sen4,res_event_sen5,res_event_sen6,res_event_sen7,res_event_sen8;
 /*-----------------------------------------------------------------------------------------------------*/
+
+//PROCESS_NAME(udp_client_process);
 PROCESS_NAME(sen0_process);
 PROCESS_NAME(sen1_process);
 PROCESS_NAME(sen2_process);
@@ -77,9 +79,13 @@ PROCESS_THREAD(thinqbot_server, ev, data)
 {
   PROCESS_BEGIN();
 
+  //PRINTF("Starting udp_client_process\n");
+  //process_start(&udp_client_process,NULL);
+
   PROCESS_PAUSE();
 
   PRINTF("Starting Erbium Example Server\n");
+  LOG_INFO("Starting Erbium Example Server.");
 
 #ifdef RF_CHANNEL
   PRINTF("RF channel: %u\n", RF_CHANNEL);

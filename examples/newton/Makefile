@@ -4,6 +4,7 @@ all: newton
 CONTIKI=../..
 
 CFLAGS += -DPROJECT_CONF_H=\"project-conf.h\"
+PROJECT_SOURCEFILES += udp-client.c
 
 # automatically build RESTful resources
 REST_RESOURCES_DIR = ./apps/coap

@@ -94,13 +94,17 @@ extern resource_t res_sht11;
 #endif
 */
 
+PROCESS_NAME(udp_client_process);
 PROCESS(er_example_server, "Erbium Example Server");
 AUTOSTART_PROCESSES(&er_example_server);
 
 PROCESS_THREAD(er_example_server, ev, data)
 {
   PROCESS_BEGIN();
-
+  
+  PRINTF("Starting udp_client_process\n");
+  process_start(&udp_client_process,NULL);
+ // process_start(&resolv_process,NULL);
   PROCESS_PAUSE();
 
   PRINTF("Starting Erbium Example Server\n");
@@ -125,7 +129,9 @@ PROCESS_THREAD(er_example_server, ev, data)
    * WARNING: Activating twice only means alternate path, not two instances!
    * All static variables are the same for each URI path.
    */
-  rest_activate_resource(&res_hello, "test/hello");
+  //rest_activate_resource(&res_hello,"test/hello");
+  //rest_activate_resource(&res_routes,"rpl/routes");
+  //rest_activate_resource(&res_parents,"rpl/parents");
 /*  rest_activate_resource(&res_mirror, "debug/mirror"); */
 /*  rest_activate_resource(&res_chunks, "test/chunks"); */
 /*  rest_activate_resource(&res_separate, "test/separate"); */
@@ -174,3 +180,4 @@ PROCESS_THREAD(er_example_server, ev, data)
 
   PROCESS_END();
 }
+

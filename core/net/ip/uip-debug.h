@@ -52,6 +52,9 @@ void uip_debug_lladdr_print(const uip_lladdr_t *addr);
 #define DEBUG_ANNOTATE  2
 #define DEBUG_FULL      DEBUG_ANNOTATE | DEBUG_PRINT
 
+#define MAX_PAYLOAD_LEN 512
+char log_buf[MAX_PAYLOAD_LEN];
+
 /* PRINTA will always print if the debug routines are called directly */
 #ifdef __AVR__
 #include <avr/pgmspace.h>
@@ -75,6 +78,14 @@ void uip_debug_lladdr_print(const uip_lladdr_t *addr);
 #define PRINTF(FORMAT,args...) printf_P(PSTR(FORMAT),##args)
 #else
 #define PRINTF(...) printf(__VA_ARGS__)
+//#define LOG_INFO(msg, ...)  printf ("\n[%s %s][%s (%s) (%d)]\t:  "msg, __DATE__, __TIME__, __FILE__, __func__ , __LINE__, ##__VA_ARGS__)
+
+
+#define LOG_INFO(msg, ...)  \
+        sprintf (log_buf, "[%s %s][%s (%s) (%d)]\t:  " msg"\n", __DATE__, __TIME__, __FILE__, __func__ , __LINE__, ##__VA_ARGS__); \
+        uip_udp_packet_send(client_conn, log_buf, strlen(log_buf));
+        
+
 #endif
 #define PRINT6ADDR(addr) uip_debug_ipaddr_print(addr)
 #define PRINTLLADDR(lladdr) uip_debug_lladdr_print(lladdr)
