@@ -42,10 +42,16 @@
 #include "contiki.h"
 #include "contiki-net.h"
 #include "rest-engine.h"
-
+#include "core/net/ip/uip-debug.h""
+#include "config.h"
 #if PLATFORM_HAS_BUTTON
 #include "dev/button-sensor.h"
 #endif
+
+
+#define MAX_PAYLOAD_LEN 512
+char log_buf[MAX_PAYLOAD_LEN];
+
 
 #define DEBUG 1
 #if DEBUG
@@ -62,7 +68,7 @@
 extern resource_t res_handshake,res_event_sen0,res_event_sen1,res_event_sen2,res_event_sen3,res_event_sen4,res_event_sen5,res_event_sen6,res_event_sen7,res_event_sen8;
 /*-----------------------------------------------------------------------------------------------------*/
 
-//PROCESS_NAME(udp_client_process);
+PROCESS_NAME(udp_client_process);
 PROCESS_NAME(sen0_process);
 PROCESS_NAME(sen1_process);
 PROCESS_NAME(sen2_process);
@@ -79,8 +85,9 @@ PROCESS_THREAD(thinqbot_server, ev, data)
 {
   PROCESS_BEGIN();
 
-  //PRINTF("Starting udp_client_process\n");
-  //process_start(&udp_client_process,NULL);
+  PRINTF("Starting udp_client_process\n");
+  process_start(&udp_client_process,NULL);
+  LOG_INFO("MANIKANT");
 
   PROCESS_PAUSE();
 

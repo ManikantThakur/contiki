@@ -3,7 +3,7 @@
 
 #define COAPSERVER 1 
 
-//PROCESS_NAME(udp_client_process);
+PROCESS_NAME(udp_client_process);
 PROCESS(demo_newton_process, "Thinqbot Newton");
 AUTOSTART_PROCESSES(&demo_newton_process);
 #if COAPSERVER
@@ -21,8 +21,8 @@ start_apps(void)
 PROCESS_THREAD(demo_newton_process, ev, data)
 {
   PROCESS_BEGIN();
-  //PRINTF("Starting udp_client_process\n");
-  //process_start(&udp_client_process,NULL);
+  PRINTF("Starting udp_client_process.");
+  process_start(&udp_client_process,NULL);
   start_apps();
   PROCESS_END();
 }

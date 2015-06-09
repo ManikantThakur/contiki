@@ -56,6 +56,7 @@ tools/cooja/apps/collect-view/cooja-collect-view.jar
 # sdcc build artifacts
 contiki-sensinode.lib
 contiki-cc2530dk.lib
+*.swp
 *.ihx
 *.hex
 *.mem
