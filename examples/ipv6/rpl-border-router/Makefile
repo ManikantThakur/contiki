@@ -10,6 +10,8 @@ CFLAGS += -DPROJECT_CONF_H=\"project-conf.h\"
 #PROJECT_SOURCEFILES += server-logger.c
 PROJECT_SOURCEFILES += slip-bridge.c udp-server.c
 
+MODULES += logger
+
 #Simple built-in webserver is the default.
 #Override with make WITH_WEBSERVER=0 for no webserver.
 #WITH_WEBSERVER=webserver-name will use /apps/webserver-name if it can be

@@ -42,16 +42,10 @@
 #include "contiki.h"
 #include "contiki-net.h"
 #include "rest-engine.h"
-#include "core/net/ip/uip-debug.h""
-#include "config.h"
+#include "logger/logger.h"
 #if PLATFORM_HAS_BUTTON
 #include "dev/button-sensor.h"
 #endif
-
-
-#define MAX_PAYLOAD_LEN 512
-char log_buf[MAX_PAYLOAD_LEN];
-
 
 #define DEBUG 1
 #if DEBUG
@@ -65,82 +59,66 @@ char log_buf[MAX_PAYLOAD_LEN];
 #define PRINTLLADDR(addr)
 #endif
 /*-----------------------------------------------------------------------------------------------*/
-extern resource_t res_handshake,res_event_sen0,res_event_sen1,res_event_sen2,res_event_sen3,res_event_sen4,res_event_sen5,res_event_sen6,res_event_sen7,res_event_sen8;
+extern resource_t res_handshake, res_event_sen0, res_event_sen1, res_event_sen2,
+		res_event_sen3, res_event_sen4, res_event_sen5, res_event_sen6,
+		res_event_sen7, res_event_sen8;
 /*-----------------------------------------------------------------------------------------------------*/
 
-PROCESS_NAME(udp_client_process);
-PROCESS_NAME(sen0_process);
-PROCESS_NAME(sen1_process);
-PROCESS_NAME(sen2_process);
-PROCESS_NAME(sen3_process);
-PROCESS_NAME(sen4_process);
-PROCESS_NAME(sen5_process);
-PROCESS_NAME(sen6_process);
-PROCESS_NAME(sen7_process);
-PROCESS_NAME(sen8_process);
+//PROCESS_NAME (udp_client_process);
+PROCESS_NAME (sen0_process);
+PROCESS_NAME (sen1_process);
+PROCESS_NAME (sen2_process);
+PROCESS_NAME (sen3_process);
+PROCESS_NAME (sen4_process);
+PROCESS_NAME (sen5_process);
+PROCESS_NAME (sen6_process);
+PROCESS_NAME (sen7_process);
+PROCESS_NAME (sen8_process);
 PROCESS(thinqbot_server, "Erbium Example Server");
 //AUTOSTART_PROCESSES(&er_example_server);
 
 PROCESS_THREAD(thinqbot_server, ev, data)
 {
-  PROCESS_BEGIN();
+	PROCESS_BEGIN();
 
-  PRINTF("Starting udp_client_process\n");
-  process_start(&udp_client_process,NULL);
-  LOG_INFO("MANIKANT");
+//	PRINTF("Starting udp_client_process\n");
+//	process_start(&udp_client_process,NULL);
+	LOG_INFO("Thinqbot MANIKANT");
 
-  PROCESS_PAUSE();
+	PROCESS_PAUSE();
 
-  PRINTF("Starting Erbium Example Server\n");
-  LOG_INFO("Starting Erbium Example Server.");
+	PRINTF("Starting Erbium Example Server\n");
 
 #ifdef RF_CHANNEL
-  PRINTF("RF channel: %u\n", RF_CHANNEL);
+	PRINTF("RF channel: %u\n", RF_CHANNEL);
 #endif
 #ifdef IEEE802154_PANID
-  PRINTF("PAN ID: 0x%04X\n", IEEE802154_PANID);
+	PRINTF("PAN ID: 0x%04X\n", IEEE802154_PANID);
 #endif
 
-  PRINTF("uIP buffer: %u\n", UIP_BUFSIZE);
-  PRINTF("LL header: %u\n", UIP_LLH_LEN);
-  PRINTF("IP+UDP header: %u\n", UIP_IPUDPH_LEN);
-  PRINTF("REST max chunk: %u\n", REST_MAX_CHUNK_SIZE);
+	PRINTF("uIP buffer: %u\n", UIP_BUFSIZE);
+	PRINTF("LL header: %u\n", UIP_LLH_LEN);
+	PRINTF("IP+UDP header: %u\n", UIP_IPUDPH_LEN);
+	PRINTF("REST max chunk: %u\n", REST_MAX_CHUNK_SIZE);
 
-  /* Initialize the REST engine. */
-  rest_init_engine();
-  //process_start(&sen0_process,NULL);
-  //process_start(&sen1_process,NULL);
-  //process_start(&sen2_process,NULL);
-  //process_start(&sen3_process,NULL);
-  process_start(&sen4_process,NULL);
-  process_start(&sen5_process,NULL);
-  process_start(&sen6_process,NULL);
-  process_start(&sen7_process,NULL);
-  //process_start(&sen8_process,NULL);
-  rest_activate_resource(&res_handshake, "dev/handshake");
-  //rest_activate_resource(&res_event_sen0,"sen/0");
-  //rest_activate_resource(&res_event_sen1,"sen/1");
-  //rest_activate_resource(&res_event_sen2,"sen/2");
-  //rest_activate_resource(&res_event_sen3,"sen/3");
-  rest_activate_resource(&res_event_sen4,"sen/4");
-  rest_activate_resource(&res_event_sen5,"sen/5");
-  rest_activate_resource(&res_event_sen6,"sen/6");
-  rest_activate_resource(&res_event_sen7,"sen/7");
-  //rest_activate_resource(&res_event_sen8,"sen/8");
-while(1) {
-    PROCESS_WAIT_EVENT();
+	/* Initialize the REST engine. */
+	rest_init_engine();
+	process_start(&sen4_process,NULL);
+	process_start(&sen5_process,NULL);
+	process_start(&sen6_process,NULL);
+	process_start(&sen7_process,NULL);
+	rest_activate_resource(&res_handshake, "dev/handshake");
+	rest_activate_resource(&res_event_sen4,"sen/4");
+	rest_activate_resource(&res_event_sen5,"sen/5");
+	rest_activate_resource(&res_event_sen6,"sen/6");
+	rest_activate_resource(&res_event_sen7,"sen/7");
+	while(1) {
+		PROCESS_WAIT_EVENT();
 #if PLATFORM_HAS_BUTTON
-    if(ev == sensors_event && data == &button_sensor) {
-      PRINTF("*******BUTTON*******\n");
-
-      /* Call the event_handler for this application-specific event. */
- //     res_event.trigger();
-
-      /* Also call the separate response example handler. */
-   //   res_separate.resume();
-    }
+		if(ev == sensors_event && data == &button_sensor)
+		PRINTF("*******BUTTON*******\n");
 #endif /* PLATFORM_HAS_BUTTON */
-  }                             /* while (1) */
+	} /* while (1) */
 
-  PROCESS_END();
+	PROCESS_END();
 }

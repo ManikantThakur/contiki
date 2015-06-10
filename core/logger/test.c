@@ -3,19 +3,16 @@
 #include "contiki-net.h"
 #include "net/rpl/rpl.h"
 #include "net/ip/uip.h"
-#include "clock.h"
 
+#include "test.h"
 #if UDP_CLIENT_STORE_RADIO_INFO
 #include "dev/radio-sensor.h"
 #endif
 
 #include <string.h>
 
-#define CLIENT_CONN client_conn
-
 #define DEBUG 1
 #include "logger/logger.h"
-
 extern uip_ds6_prefix_t uip_ds6_prefix_list[];
 uip_ip6addr_t dest_addr;
 uint8_t use_user_dest_addr = 0;
@@ -23,14 +20,22 @@ uip_ip6addr_t user_dest_addr;
 uint16_t user_dest_port = LOGGING_PORT;
 uint8_t udp_client_run = 0;
 clock_time_t udp_interval = UDP_PERIOD * CLOCK_SECOND;
+//static struct uip_udp_conn *client_conn;
 
 #if PLATFORM_HAS_RADIO && UDP_CLIENT_STORE_RADIO_INFO
 int udp_client_lqi = 0;
 int udp_client_rssi = 0;
 #endif
 
+struct uip_udp_conn * get_client_conn(void) {
+	return client_conn;
+}
+
 /*---------------------------------------------------------------------------*/
 PROCESS(udp_client_process, "UDP client process");
+//PROCESS_NAME (udp_client_process);
+//process_start(&udp_client_process,NULL);
+//AUTOSTART_PROCESSES (&udp_client_process);
 /*---------------------------------------------------------------------------*/
 
 static void tcpip_handler(void) {
@@ -131,6 +136,7 @@ static void timeout_handler(void) {
 				PRINTF("\n");
 				uip_udp_remove (client_conn);
 				client_conn = udp_new(&dest_addr, UIP_HTONS(dest_port), NULL);
+				//LOG_INFO("Client Conn: %s\n", client_conn);
 				if (client_conn != NULL) {
 					PRINTF("Created a connection with the server ");
 					PRINT6ADDR(&client_conn->ripaddr);
@@ -148,8 +154,11 @@ static void timeout_handler(void) {
 				// SEND TO SERVER
 				//sprintf(buf, "Hello Newton");
 
-				LOG_INFO("Hello Newton");
+				LOG_INFO("Client Connection	: ");
 
+//				PRINT6ADDR(&client_conn->ripaddr);
+//				LOG_INFO("\n");
+				//LOG_INFO("\nLogger Hello Newton");
 				//#if SEND_TOO_LARGE_PACKET_TO_TEST_FRAGMENTATION
 				//uip_udp_packet_send(client_conn, buf, UIP_APPDATA_SIZE);
 				//#else /* SEND_TOO_LARGE_PACKET_TO_TEST_FRAGMENTATION */
@@ -171,7 +180,7 @@ PROCESS_THREAD(udp_client_process, ev, data)
 	static struct etimer et;
 
 	PROCESS_BEGIN();
-	PRINTF("UDP client process started\n");
+	LOG_INFO("UDP client process started\n");
 	memset(&dest_addr, 0, sizeof(uip_ipaddr_t));
 
 	udp_client_run=1;

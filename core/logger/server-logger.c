@@ -34,7 +34,7 @@
 #include <string.h>
 
 #define DEBUG DEBUG_PRINT
-#include "net/uip-debug.h"
+#include "net/ip/uip-debug.h"
 
 #define UIP_IP_BUF   ((struct uip_ip_hdr *)&uip_buf[UIP_LLH_LEN])
 
@@ -44,52 +44,50 @@
 #define LOGGER_CLIENT_PORT 5501
 
 static struct uip_udp_conn *server_conn;
+//
+//PROCESS(udp_server_process, "UDP server process");
+//AUTOSTART_PROCESSES(&resolv_process,&udp_server_process);
 
-PROCESS(udp_server_process, "UDP server process");
-AUTOSTART_PROCESSES(&resolv_process,&udp_server_process);
+static void tcpip_handler(void) {
+	static int seq_id;
+	char buf[MAX_PAYLOAD_LEN];
 
-static void
-tcpip_handler(void)
-{
-  static int seq_id;
-  char buf[MAX_PAYLOAD_LEN];
+	if (uip_newdata()) {
+		((char *) uip_appdata)[uip_datalen()] = 0;
 
-  if(uip_newdata()) {
-    ((char *)uip_appdata)[uip_datalen()] = 0;
+		PRINTF("%s", (char *) uip_appdata);
 
-    PRINTF("%s", (char *)uip_appdata);
+		//PRINTF("\nServer received: '%s' from ", (char *)uip_appdata);
+		//PRINT6ADDR(&UIP_IP_BUF->srcipaddr);
+		//PRINTF("\n");
+		uip_ipaddr_copy(&server_conn->ripaddr, &UIP_IP_BUF->srcipaddr);
 
-    //PRINTF("\nServer received: '%s' from ", (char *)uip_appdata);
-    //PRINT6ADDR(&UIP_IP_BUF->srcipaddr);
-    //PRINTF("\n");
-    uip_ipaddr_copy(&server_conn->ripaddr, &UIP_IP_BUF->srcipaddr);
-
-    /* Restore server connection to allow data from any node */
-    memset(&server_conn->ripaddr, 0, sizeof(server_conn->ripaddr));
-  }
+		/* Restore server connection to allow data from any node */
+		memset(&server_conn->ripaddr, 0, sizeof(server_conn->ripaddr));
+	}
 }
 
 PROCESS_THREAD(udp_server_process, ev, data)
 {
 #if UIP_CONF_ROUTER
-  uip_ipaddr_t ipaddr;
+	uip_ipaddr_t ipaddr;
 #endif /* UIP_CONF_ROUTER */
 
-  PROCESS_BEGIN();
-  PRINTF("UDP server started\n");
+	PROCESS_BEGIN();
+	PRINTF("UDP server started\n");
 
 #if RESOLV_CONF_SUPPORTS_MDNS
-  resolv_set_hostname("contiki-logging-server");
+	resolv_set_hostname("contiki-logging-server");
 #endif
 
-  server_conn = udp_new(NULL, UIP_HTONS(LOGGER_CLIENT_PORT), NULL);
-  udp_bind(server_conn, UIP_HTONS(LOGGER_SERVER_PORT));
+	server_conn = udp_new(NULL, UIP_HTONS(LOGGER_CLIENT_PORT), NULL);
+	udp_bind(server_conn, UIP_HTONS(LOGGER_SERVER_PORT));
 
-  while(1) {
-    PROCESS_YIELD();
-    if(ev == tcpip_event)
-      tcpip_handler();
-  }
+	while(1) {
+		PROCESS_YIELD();
+		if(ev == tcpip_event)
+		tcpip_handler();
+	}
 
-  PROCESS_END();
+	PROCESS_END();
 }
