@@ -5,7 +5,6 @@
 
 #define DEBUG 1
 #include "logger/logger.h"
-//#include "net/ip/uip-debug.h"
 
 PROCESS(udp_server_process, "UDP server process");
 
@@ -21,7 +20,6 @@ static void tcpip_handler(void) {
 		 * Can also be saved in CFS. To Be Implemented.
 		 */
 
-		PRINTF("On Server : ");
 		PRINT6ADDR(&UIP_IP_BUF->srcipaddr);
 		PRINTF(" : %s ", (char *) uip_appdata);
 
@@ -43,7 +41,7 @@ static void tcpip_handler(void) {
 PROCESS_THREAD(udp_server_process, ev, data)
 {
 	PROCESS_BEGIN();
-	PRINTF("Starting UDP Server Process\n");
+	LOG_INFO("Starting UDP Server Process\n");
 
 	server_conn = udp_new(NULL, 0, NULL);
 	udp_bind(server_conn, UIP_HTONS(LOGGING_PORT));

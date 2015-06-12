@@ -64,7 +64,7 @@ static int status = 0;
 #if SENSORS
 static void res_event_handler();
 static struct etimer et;
-static int interval=5;
+static int interval=3;
 /*
  * Example for an event resource.
  * Additionally takes a period parameter that defines the interval to call [name]_periodic_handler().
@@ -88,8 +88,9 @@ res_get_handler(void *request, void *response, uint8_t *buffer, uint16_t preferr
 {
 	char message[500];
 	sprintf(message,"{\"key\":\"temperature\",\"value\":%d}",get_temperature());
-	//LOG_INFO("Before LOG_INFO\n");
-	send_message("Insen4");
+	printf("IN GET HANDLER\n");
+	LOG_INFO("In SEN 4\n");
+	//send_message("Insen4");
 	//sen("After LOG_INFO\n");
 	REST.set_header_content_type(response, REST.type.APPLICATION_JSON);
 	REST.set_response_payload(response, message, strlen(message));

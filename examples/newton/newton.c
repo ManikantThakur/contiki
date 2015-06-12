@@ -21,19 +21,8 @@ void start_apps(void) {
 PROCESS_THREAD(demo_newton_process, ev, data)
 {
 	PROCESS_BEGIN();
-//	PRINTF("newton.c : ");
-//	PRINT6ADDR(&client_conn->ripaddr);
-//	PRINTF("\n");
-
-//TQ_DEFINE_CLIENT();
 	TQ_START_CLIENT();
-
-//	send_message("newton.c\n");
-
-	LOG_INFO("Starting newton_process.[IP: %s].");
-//,get_client_conn());
-
-//process_start(&udp_client_process,NULL);
+	LOG_INFO("Starting newton_process.");
 	start_apps();
 	PROCESS_END();
 }

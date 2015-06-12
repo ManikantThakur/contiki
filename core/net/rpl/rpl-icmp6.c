@@ -53,7 +53,8 @@
 #include "net/rpl/rpl-private.h"
 #include "net/packetbuf.h"
 #include "net/ipv6/multicast/uip-mcast6.h"
-
+#include "logger/test.h"
+#include "logger/logger.h"
 #include <limits.h>
 #include <string.h>
 
@@ -220,6 +221,7 @@ static void dio_input(void) {
 	uip_ipaddr_copy(&from, &UIP_IP_BUF->srcipaddr);
 
 	/* DAG Information Object */
+	PRINTF("RPL: Received a DIO from ");
 	PRINTF("RPL: Received a DIO from ");
 	PRINT6ADDR(&from);
 	PRINTF("\n");
@@ -907,8 +909,7 @@ static void dao_ack_input(void) {
 	sequence = buffer[2];
 	status = buffer[3];
 
-	PRINTF("RPL: Received a DAO ACK with sequence number %d and status %d from ",
-			sequence, status);
+	PRINTF("RPL: Received a DAO ACK with sequence number %d and status %d from ",sequence, status);
 	PRINT6ADDR(&UIP_IP_BUF->srcipaddr);
 	PRINTF("\n");
 #endif /* DEBUG */
