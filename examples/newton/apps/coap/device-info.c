@@ -40,7 +40,9 @@
 #include <string.h>
 #include "rest-engine.h"
 #include "sensor.h"
-static void res_get_handler(void *request, void *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset);
+#include "logger/logger.h";
+static void res_get_handler(void *request, void *response, uint8_t *buffer,
+		uint16_t preferred_size, int32_t *offset);
 
 /*
  * A handler function named [resource name]_handler must be implemented for each RESOURCE.
@@ -50,13 +52,13 @@ static void res_get_handler(void *request, void *response, uint8_t *buffer, uint
  */
 RESOURCE(res_handshake,"title=\"Handshake\"",res_get_handler,NULL,NULL,NULL);
 
-static void
-res_get_handler(void *request, void *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset)
-{
-  const char *len = NULL;
-  /* Some data that has the length up to REST_MAX_CHUNK_SIZE. For more, see the chunk resource. */
-  char const *const message = get_device_status();
-  REST.set_header_content_type(response, REST.type.APPLICATION_JSON); /* text/plain is the default, hence this option could be omitted. */
-  //REST.set_header_etag(response, (uint8_t *)&length, 1);
-  REST.set_response_payload(response, message, strlen(message));
+static void res_get_handler(void *request, void *response, uint8_t *buffer,
+		uint16_t preferred_size, int32_t *offset) {
+	const char *len = NULL;
+	//LOG_INFO("In Handshake");
+	/* Some data that has the length up to REST_MAX_CHUNK_SIZE. For more, see the chunk resource. */
+	char const * const message = get_device_status();
+	REST.set_header_content_type(response, REST.type.APPLICATION_JSON); /* text/plain is the default, hence this option could be omitted. */
+	//REST.set_header_etag(response, (uint8_t *)&length, 1);
+	REST.set_response_payload(response, message, strlen(message));
 }

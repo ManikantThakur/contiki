@@ -58,7 +58,6 @@
 #define HAVE_STDINT_H
 #include "msp430def.h"
 
-
 /* Types for clocks and uip_stats */
 typedef unsigned short uip_stats_t;
 typedef unsigned long clock_time_t;
@@ -70,9 +69,7 @@ typedef unsigned long off_t;
 #define ROM_ERASE_UNIT_SIZE  512
 #define XMEM_ERASE_UNIT_SIZE (64*1024L)
 
-
 #define CFS_CONF_OFFSET_TYPE    long
-
 
 /* Use the first 64k of external flash for node configuration */
 #define NODE_ID_XMEM_OFFSET     (0 * XMEM_ERASE_UNIT_SIZE)
@@ -93,11 +90,11 @@ typedef unsigned long off_t;
 #define SPI_TXBUF UCB0TXBUF
 #define SPI_RXBUF UCB0RXBUF
 
-                                /* USART0 Tx ready? */
+/* USART0 Tx ready? */
 #define SPI_WAITFOREOTx() while ((UCB0STAT & UCBUSY) != 0)
-                                /* USART0 Rx ready? */
+/* USART0 Rx ready? */
 #define SPI_WAITFOREORx() while ((UCB0IFG & UCRXIFG) == 0)
-                                /* USART0 Tx buffer ready? */
+/* USART0 Tx buffer ready? */
 #define SPI_WAITFORTxREADY() while ((UCB0IFG & UCTXIFG) == 0)
 /*                                 /\* USART0 Tx ready? *\/ */
 /* #define SPI_WAITFOREOTx() while (!(UCB0IFG & UCRXIFG)) */
@@ -191,9 +188,9 @@ typedef unsigned long off_t;
  * (Chip Select)
  */
 
- /* ENABLE CSn (active low) */
+/* ENABLE CSn (active low) */
 #define CC2520_SPI_ENABLE()     do{ UCB0CTL1 &= ~UCSWRST;  clock_delay(5); P3OUT &= ~BIT0;clock_delay(5);}while(0)
- /* DISABLE CSn (active low) */
+/* DISABLE CSn (active low) */
 #define CC2520_SPI_DISABLE()    do{clock_delay(5);UCB0CTL1 |= UCSWRST;clock_delay(1); P3OUT |= BIT0;clock_delay(5);}while(0)
 #define CC2520_SPI_IS_ENABLED() ((CC2520_CSN_PORT(OUT) & BV(CC2520_CSN_PIN)) != BV(CC2520_CSN_PIN))
 

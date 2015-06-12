@@ -83,7 +83,7 @@ PROCESS_THREAD(thinqbot_server, ev, data)
 
 //	PRINTF("Starting udp_client_process\n");
 //	process_start(&udp_client_process,NULL);
-	LOG_INFO("Thinqbot MANIKANT");
+	//LOG_INFO("Thinqbot MANIKANT");
 
 	PROCESS_PAUSE();
 
@@ -104,14 +104,14 @@ PROCESS_THREAD(thinqbot_server, ev, data)
 	/* Initialize the REST engine. */
 	rest_init_engine();
 	process_start(&sen4_process,NULL);
-	process_start(&sen5_process,NULL);
-	process_start(&sen6_process,NULL);
-	process_start(&sen7_process,NULL);
+	//process_start(&sen5_process,NULL);
+	//process_start(&sen6_process,NULL);
+	//process_start(&sen7_process,NULL);
 	rest_activate_resource(&res_handshake, "dev/handshake");
 	rest_activate_resource(&res_event_sen4,"sen/4");
-	rest_activate_resource(&res_event_sen5,"sen/5");
-	rest_activate_resource(&res_event_sen6,"sen/6");
-	rest_activate_resource(&res_event_sen7,"sen/7");
+	//rest_activate_resource(&res_event_sen5,"sen/5");
+	//rest_activate_resource(&res_event_sen6,"sen/6");
+	//rest_activate_resource(&res_event_sen7,"sen/7");
 	while(1) {
 		PROCESS_WAIT_EVENT();
 #if PLATFORM_HAS_BUTTON

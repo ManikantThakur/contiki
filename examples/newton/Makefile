@@ -5,7 +5,6 @@ CONTIKI=../..
 
 CFLAGS += -DPROJECT_CONF_H=\"project-conf.h\"
 #PROJECT_SOURCEFILES += udp-client.c
-
 MODULES += core/logger
 
 # automatically build RESTful resources

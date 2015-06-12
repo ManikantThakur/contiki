@@ -21,6 +21,7 @@ static void tcpip_handler(void) {
 		 * Can also be saved in CFS. To Be Implemented.
 		 */
 
+		PRINTF("On Server : ");
 		PRINT6ADDR(&UIP_IP_BUF->srcipaddr);
 		PRINTF(" : %s ", (char *) uip_appdata);
 
@@ -32,6 +33,7 @@ static void tcpip_handler(void) {
 		server_conn->rport = UIP_UDP_BUF->srcport;
 
 		uip_udp_packet_send(server_conn, buf, strlen(buf));
+
 		/* Restore server connection to allow data from any node */
 		memset(&server_conn->ripaddr, 0, sizeof(server_conn->ripaddr));
 		server_conn->rport = 0;

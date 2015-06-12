@@ -53,4 +53,5 @@ contiki-$(TARGET).a: ${addprefix $(OBJECTDIR)/,symbols.o}
 MODULES += core/net core/net/mac \
            core/net/mac/contikimac \
            core/net/llsec \
-           dev/cc2520 dev/sht11
+           dev/cc2520 dev/sht11 
+#           core/logger

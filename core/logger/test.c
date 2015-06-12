@@ -13,6 +13,10 @@
 
 #define DEBUG 1
 #include "logger/logger.h"
+
+//uip_ip6addr_t server_ip = {(char *uint8_t),}
+//#define SERVER_IP "aaaa::200:0:0:1"
+
 extern uip_ds6_prefix_t uip_ds6_prefix_list[];
 uip_ip6addr_t dest_addr;
 uint8_t use_user_dest_addr = 0;
@@ -20,16 +24,17 @@ uip_ip6addr_t user_dest_addr;
 uint16_t user_dest_port = LOGGING_PORT;
 uint8_t udp_client_run = 0;
 clock_time_t udp_interval = UDP_PERIOD * CLOCK_SECOND;
-//static struct uip_udp_conn *client_conn;
+struct uip_udp_conn *client_conn;
 
 #if PLATFORM_HAS_RADIO && UDP_CLIENT_STORE_RADIO_INFO
 int udp_client_lqi = 0;
 int udp_client_rssi = 0;
 #endif
 
-struct uip_udp_conn * get_client_conn(void) {
-	return client_conn;
-}
+//struct uip_udp_conn * get_client_conn(void) {
+////	LOG_INFO("\nIP : %s :\n", &UIP_IP_BUF->srcipaddr);
+//	return &UIP_IP_BUF->srcipaddr;
+//}
 
 /*---------------------------------------------------------------------------*/
 PROCESS(udp_client_process, "UDP client process");
@@ -37,8 +42,11 @@ PROCESS(udp_client_process, "UDP client process");
 //process_start(&udp_client_process,NULL);
 //AUTOSTART_PROCESSES (&udp_client_process);
 /*---------------------------------------------------------------------------*/
-
+void send_message(char *input) {
+	LOG_INFO("%s", input);
+}
 static void tcpip_handler(void) {
+	LOG_INFO("In TCP handler");
 	char *str;
 
 	if (uip_newdata()) {
@@ -77,7 +85,8 @@ add_ipaddr(char * buf, const uip_ipaddr_t *addr) {
 	return p;
 }
 
-static void timeout_handler(void) {
+void timeout_handler(void) {
+	//LOG_INFO("IN Timeout handler");
 	static int seq_id;
 	char buf[MAX_PAYLOAD_LEN];
 	int i;
@@ -134,7 +143,7 @@ static void timeout_handler(void) {
 				PRINTF("UDP-CLIENT: new address destination: ");
 				PRINT6ADDR(&dest_addr);
 				PRINTF("\n");
-				uip_udp_remove (client_conn);
+				uip_udp_remove(client_conn);
 				client_conn = udp_new(&dest_addr, UIP_HTONS(dest_port), NULL);
 				//LOG_INFO("Client Conn: %s\n", client_conn);
 				if (client_conn != NULL) {
@@ -148,13 +157,17 @@ static void timeout_handler(void) {
 				}
 			}
 		}
+		PRINT6ADDR(&client_conn->ripaddr);
 		if (client_conn != NULL) {
+			PRINT6ADDR(&client_conn->ripaddr);
+
 			if (udp_client_run) {
 
 				// SEND TO SERVER
 				//sprintf(buf, "Hello Newton");
 
-				LOG_INFO("Client Connection	: ");
+//				LOG_INFO("Hello Newton ");
+//				PRINTF("After LOG_INFO\n");
 
 //				PRINT6ADDR(&client_conn->ripaddr);
 //				LOG_INFO("\n");
@@ -199,4 +212,3 @@ PROCESS_THREAD(udp_client_process, ev, data)
 	PROCESS_END();
 }
 /*---------------------------------------------------------------------------*/
-

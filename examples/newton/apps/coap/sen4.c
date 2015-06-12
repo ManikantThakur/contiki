@@ -42,6 +42,8 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "config.h"
+#include "logger/logger.h"
+#include "logger/test.h"
 #define DEBUG 0
 #if DEBUG
 #include <stdio.h>
@@ -54,8 +56,10 @@
 #define PRINTLLADDR(addr)
 #endif
 
-static void res_get_handler(void *request, void *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset);
-static void res_put_post_handler(void *request, void *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset);
+static void res_get_handler(void *request, void *response, uint8_t *buffer,
+		uint16_t preferred_size, int32_t *offset);
+static void res_put_post_handler(void *request, void *response, uint8_t *buffer,
+		uint16_t preferred_size, int32_t *offset);
 static int status = 0;
 #if SENSORS
 static void res_event_handler();
@@ -67,12 +71,12 @@ static int interval=5;
  * A default post_handler takes care of subscriptions and manages a list of subscribers to notify.
  */
 EVENT_RESOURCE(res_event_sen4,
-               "title=\"Event demo\";obs",
-               res_get_handler,
-               res_put_post_handler,
-               res_put_post_handler,
-               NULL,
-               res_event_handler);
+		"title=\"Event demo\";obs",
+		res_get_handler,
+		res_put_post_handler,
+		res_put_post_handler,
+		NULL,
+		res_event_handler);
 
 /*
  * Use local resource state that is accessed by res_get_handler() and altered by res_event_handler() or PUT or POST.
@@ -82,22 +86,25 @@ static int32_t event_counter = 0;
 static void
 res_get_handler(void *request, void *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset)
 {
-  char message[500];
-  sprintf(message,"{\"key\":\"temperature\",\"value\":%d}",get_temperature());
-  REST.set_header_content_type(response, REST.type.APPLICATION_JSON);
-  REST.set_response_payload(response, message, strlen(message));
-  /* A post_handler that handles subscriptions/observing will be called for periodic resources by the framework. */
+	char message[500];
+	sprintf(message,"{\"key\":\"temperature\",\"value\":%d}",get_temperature());
+	//LOG_INFO("Before LOG_INFO\n");
+	send_message("Insen4");
+	//sen("After LOG_INFO\n");
+	REST.set_header_content_type(response, REST.type.APPLICATION_JSON);
+	REST.set_response_payload(response, message, strlen(message));
+	/* A post_handler that handles subscriptions/observing will be called for periodic resources by the framework. */
 }
 
 static void
 res_put_post_handler(void *request, void *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset)
 {
- const uint8_t *chunk;
- int len = coap_get_payload(request, &chunk);
- interval = atoi(chunk);
- //etimer_reset(&et);
+	const uint8_t *chunk;
+	int len = coap_get_payload(request, &chunk);
+	interval = atoi(chunk);
+	//etimer_reset(&et);
 //etimer_set(&et, 50 * CLOCK_SECOND);
- //printf("Settings is %d\n",interval);
+	//printf("Settings is %d\n",interval);
 
 }
 /*
@@ -107,34 +114,34 @@ res_put_post_handler(void *request, void *response, uint8_t *buffer, uint16_t pr
 static void
 res_event_handler()
 {
-  /* Do the update triggered by the event here, e.g., sampling a sensor. */
-  ++event_counter;
+	/* Do the update triggered by the event here, e.g., sampling a sensor. */
+	++event_counter;
 
-  /* Usually a condition is defined under with subscribers are notified, e.g., event was above a threshold. */
-  if(1) {
-    PRINTF("TICK %u for /%s\n", event_counter, res_event.url);
+	/* Usually a condition is defined under with subscribers are notified, e.g., event was above a threshold. */
+	if(1) {
+		PRINTF("TICK %u for /%s\n", event_counter, res_event.url);
 
-    /* Notify the registered observers which will trigger the res_get_handler to create the response. */
-    REST.notify_subscribers(&res_event_sen4);
-  }
+		/* Notify the registered observers which will trigger the res_get_handler to create the response. */
+		REST.notify_subscribers(&res_event_sen4);
+	}
 }
 
 PROCESS(sen4_process, "Sen 4 process");
 PROCESS_THREAD(sen4_process, ev, data)
 {
-  PROCESS_BEGIN();
-  etimer_set(&et, 5 * CLOCK_SECOND);
-    while(1)
-         {
-          PROCESS_YIELD();
-           if(etimer_expired(&et)) 
-             {
-                res_event_sen4.trigger();
-                etimer_reset(&et);
-              }
-           etimer_set(&et, interval * CLOCK_SECOND);
-         }               
-  PROCESS_END();
+	PROCESS_BEGIN();
+	etimer_set(&et, 5 * CLOCK_SECOND);
+	while(1)
+	{
+		PROCESS_YIELD();
+		if(etimer_expired(&et))
+		{
+			res_event_sen4.trigger();
+			etimer_reset(&et);
+		}
+		etimer_set(&et, interval * CLOCK_SECOND);
+	}
+	PROCESS_END();
 }
 #endif
 #if ACTUATORS
@@ -142,20 +149,20 @@ RESOURCE(res_event_sen4,"title=\"sen4\"",res_get_handler,res_put_post_handler,re
 static void
 res_get_handler(void *request, void *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset)
 {
-  const char *len = NULL;
-  /* Some data that has the length up to REST_MAX_CHUNK_SIZE. For more, see the chunk resource. */
-  char message[100];
-  sprintf(message,"{\"key\":\"status\",\"value\":%d}",status);
-  REST.set_header_content_type(response, REST.type.APPLICATION_JSON); /* text/plain is the default, hence this option could be omitted. */
-  //REST.set_header_etag(response, (uint8_t *)&length, 1);
-  REST.set_response_payload(response, message, strlen(message));
+	const char *len = NULL;
+	/* Some data that has the length up to REST_MAX_CHUNK_SIZE. For more, see the chunk resource. */
+	char message[100];
+	sprintf(message,"{\"key\":\"status\",\"value\":%d}",status);
+	REST.set_header_content_type(response, REST.type.APPLICATION_JSON); /* text/plain is the default, hence this option could be omitted. */
+	//REST.set_header_etag(response, (uint8_t *)&length, 1);
+	REST.set_response_payload(response, message, strlen(message));
 }
 static void
 res_put_post_handler(void *request, void *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset)
 {
- const uint8_t *chunk;
- int len = coap_get_payload(request, &chunk);
- status = atoi(chunk);
- REST.set_response_status(response, REST.status.OK);
+	const uint8_t *chunk;
+	int len = coap_get_payload(request, &chunk);
+	status = atoi(chunk);
+	REST.set_response_status(response, REST.status.OK);
 }
 #endif
