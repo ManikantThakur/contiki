@@ -16,16 +16,13 @@
 
 char log_buf[MAX_PAYLOAD_LEN];
 
-#define TQ_DEFINE_CLIENT() PROCESS_NAME(udp_client_process);
-#define TQ_START_CLIENT() process_start(&udp_client_process,NULL);
+//#define TQ_DEFINE_CLIENT() PROCESS_NAME(udp_client_process);
+//#define TQ_START_CLIENT() process_start(&udp_client_process,NULL);
 #define PRINT6ADDR(addr) PRINTF("[%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x]", ((uint8_t *)addr)[0], ((uint8_t *)addr)[1], ((uint8_t *)addr)[2], ((uint8_t *)addr)[3], ((uint8_t *)addr)[4], ((uint8_t *)addr)[5], ((uint8_t *)addr)[6], ((uint8_t *)addr)[7], ((uint8_t *)addr)[8], ((uint8_t *)addr)[9], ((uint8_t *)addr)[10], ((uint8_t *)addr)[11], ((uint8_t *)addr)[12], ((uint8_t *)addr)[13], ((uint8_t *)addr)[14], ((uint8_t *)addr)[15])
 
-//extern uip_udp_conn *client_conn;
-//static struct uip_udp_conn *client_conn;
 static struct uip_udp_conn *server_conn;
 #define UIP_IP_BUF   ((struct uip_ip_hdr *)&uip_buf[UIP_LLH_LEN])
 #define UIP_UDP_BUF  ((struct uip_udp_hdr *)&uip_buf[UIP_LLH_LEN + UIP_IPH_LEN])
-//printf("\n On Client : [C_Conn : %d] MSG : (%s) Len : (%d) Client Address : ",client_conn->lport, log_buf ,strlen(log_buf));
 
 #define LOG_INFO(msg, ...)  \
 		extern struct uip_udp_conn *client_conn; \

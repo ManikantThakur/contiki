@@ -14,9 +14,6 @@
 #define DEBUG 1
 #include "logger/logger.h"
 
-//uip_ip6addr_t server_ip = {(char *uint8_t),}
-//#define SERVER_IP "aaaa::200:0:0:1"
-
 extern uip_ds6_prefix_t uip_ds6_prefix_list[];
 uip_ip6addr_t dest_addr;
 uint8_t use_user_dest_addr = 0;
@@ -24,6 +21,7 @@ uip_ip6addr_t user_dest_addr;
 uint16_t user_dest_port = LOGGING_PORT;
 uint8_t udp_client_run = 0;
 clock_time_t udp_interval = UDP_PERIOD * CLOCK_SECOND;
+
 struct uip_udp_conn *client_conn;
 
 #if PLATFORM_HAS_RADIO && UDP_CLIENT_STORE_RADIO_INFO
@@ -31,17 +29,7 @@ int udp_client_lqi = 0;
 int udp_client_rssi = 0;
 #endif
 
-//struct uip_udp_conn * get_client_conn(void) {
-////	LOG_INFO("\nIP : %s :\n", &UIP_IP_BUF->srcipaddr);
-//	return &UIP_IP_BUF->srcipaddr;
-//}
-
-/*---------------------------------------------------------------------------*/
 PROCESS(udp_client_process, "UDP client process");
-//PROCESS_NAME (udp_client_process);
-//process_start(&udp_client_process,NULL);
-//AUTOSTART_PROCESSES (&udp_client_process);
-/*---------------------------------------------------------------------------*/
 void send_message(char *input) {
 	LOG_INFO("%s", input);
 }
@@ -158,34 +146,15 @@ void timeout_handler(void) {
 			}
 		}
 		PRINT6ADDR(&client_conn->ripaddr);
-		if (client_conn != NULL) {
+
+		if (client_conn != NULL)
 			PRINT6ADDR(&client_conn->ripaddr);
-
-			if (udp_client_run) {
-
-				// SEND TO SERVER
-				//sprintf(buf, "Hello Newton");
-
-//				LOG_INFO("Hello Newton ");
-//				PRINTF("After LOG_INFO\n");
-
-//				PRINT6ADDR(&client_conn->ripaddr);
-//				LOG_INFO("\n");
-				//LOG_INFO("\nLogger Hello Newton");
-				//#if SEND_TOO_LARGE_PACKET_TO_TEST_FRAGMENTATION
-				//uip_udp_packet_send(client_conn, buf, UIP_APPDATA_SIZE);
-				//#else /* SEND_TOO_LARGE_PACKET_TO_TEST_FRAGMENTATION */
-				//uip_udp_packet_send(client_conn, log_buf, strlen(log_buf));
-				//#endif /* SEND_TOO_LARGE_PACKET_TO_TEST_FRAGMENTATION */
-
-			}
-		} else {
+		else
 			PRINTF("No connection created\n");
-		}
-	} else {
-		//clock_wait(1000);
-		PRINTF("No address configured\n");
+
 	}
+	else /* else has_dest */
+		PRINTF("No address configured\n");
 }
 /*---------------------------------------------------------------------------*/
 PROCESS_THREAD(udp_client_process, ev, data)
