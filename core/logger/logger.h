@@ -8,7 +8,7 @@
 #endif
 
 #ifndef UDP_PERIOD
-#define UDP_PERIOD 1
+#define UDP_PERIOD 50000
 #endif
 
 #define SEND_INTERVAL    (UDP_PERIOD * CLOCK_SECOND)
@@ -28,5 +28,8 @@ void timeout_handler(char *log_msg);
 void send_message(char *input);
 
 #define LOG_INFO(msg, ...) \
-		sprintf (log_buf, "\t[INFO] %s %s (%s#%d)\t:  [" msg"]\n", __DATE__, __TIME__, __func__ , __LINE__,##__VA_ARGS__); \
+		sprintf (log_buf, "\t[INFO] %s %s (%s#%d)\t:  " msg"", __DATE__, __TIME__, __func__ , __LINE__,##__VA_ARGS__); \
 		timeout_handler(log_buf);
+
+#define LOG_6ADDR(addr) uip_debug_ipaddr_print(addr)
+//uip_debug_ipaddr_print(addr)

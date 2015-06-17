@@ -47,7 +47,7 @@ void send_message(char *input) {
 	LOG_INFO("%s", input);
 }
 static void tcpip_handler(void) {
-	LOG_INFO("In TCP handler");
+	LOG_INFO("In TCP handler\n");
 	char *str;
 
 	if (uip_newdata()) {
@@ -87,7 +87,6 @@ add_ipaddr(char * buf, const uip_ipaddr_t *addr) {
 }
 
 void timeout_handler(char *log_msg) {
-	//LOG_INFO("IN Timeout handler");
 	static int seq_id;
 	char buf[MAX_PAYLOAD_LEN];
 	int i;
@@ -146,7 +145,7 @@ void timeout_handler(char *log_msg) {
 				PRINTF("\n");
 				uip_udp_remove(client_conn);
 				client_conn = udp_new(&dest_addr, UIP_HTONS(dest_port), NULL);
-				//LOG_INFO("Client Conn: %s\n", client_conn);
+
 				if (client_conn != NULL) {
 					LOG_INFO("Created a connection with the Log server ");
 					PRINT6ADDR(&client_conn->ripaddr);
@@ -176,7 +175,6 @@ void timeout_handler(char *log_msg) {
 			PRINTF("No connection created\n");
 		}
 	} else {
-		//clock_wait(1000);
 		PRINTF("No address configured\n");
 	}
 }

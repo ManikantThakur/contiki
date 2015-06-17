@@ -20,6 +20,7 @@ static void tcpip_handler(void) {
 		 * Can also be saved in CFS. To Be Implemented.
 		 */
 
+//		PRINTF("\n");
 		PRINT6ADDR(&UIP_IP_BUF->srcipaddr);
 		PRINTF(" : %s ", (char *) uip_appdata);
 

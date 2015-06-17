@@ -12,8 +12,8 @@
     <motedelay_us>1000000</motedelay_us>
     <radiomedium>
       org.contikios.cooja.radiomediums.UDGM
-      <transmitting_range>500.0</transmitting_range>
-      <interference_range>250.0</interference_range>
+      <transmitting_range>100.0</transmitting_range>
+      <interference_range>100.0</interference_range>
       <success_ratio_tx>1.0</success_ratio_tx>
       <success_ratio_rx>1.0</success_ratio_rx>
     </radiomedium>
@@ -64,8 +64,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>32.142646053245294</x>
-        <y>2.10638148287644</y>
+        <x>-84.4193914417856</x>
+        <y>-157.29347623072877</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -78,8 +78,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>24.368031685260597</x>
-        <y>30.71302042682186</y>
+        <x>-43.85645426230574</x>
+        <y>-181.89351717722207</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -92,8 +92,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>3.4955630991120756</x>
-        <y>9.708100026917442</y>
+        <x>-37.756451659881506</x>
+        <y>-125.15425591594624</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -106,8 +106,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>26.425038816571423</x>
-        <y>34.70305912299963</y>
+        <x>-0.547432372001321</x>
+        <y>-204.875949669617</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -120,8 +120,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>45.00566415233055</x>
-        <y>36.90727605008057</y>
+        <x>56.11197581821344</x>
+        <y>-210.60481250388102</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -134,8 +134,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>33.411415640374834</x>
-        <y>21.1721737786374</y>
+        <x>71.49019849483048</x>
+        <y>-159.70204478002682</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -148,8 +148,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>18.49624660283498</x>
-        <y>49.79383044899115</y>
+        <x>2.6300870801451595</x>
+        <y>-75.54882978025864</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -162,8 +162,8 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>30.836885359738208</x>
-        <y>38.70467459946948</y>
+        <x>-48.49391225371102</x>
+        <y>-64.42536229801453</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
@@ -176,69 +176,13 @@
       <breakpoints />
       <interface_config>
         org.contikios.cooja.interfaces.Position
-        <x>21.920770800724384</x>
-        <y>36.812763456453794</y>
+        <x>50.47985794156612</x>
+        <y>-105.9826722477548</y>
         <z>0.0</z>
       </interface_config>
       <interface_config>
         org.contikios.cooja.mspmote.interfaces.MspMoteID
         <id>9</id>
-      </interface_config>
-      <motetype_identifier>wismote2</motetype_identifier>
-    </mote>
-    <mote>
-      <breakpoints />
-      <interface_config>
-        org.contikios.cooja.interfaces.Position
-        <x>18.134118719316977</x>
-        <y>40.58448103632829</y>
-        <z>0.0</z>
-      </interface_config>
-      <interface_config>
-        org.contikios.cooja.mspmote.interfaces.MspMoteID
-        <id>10</id>
-      </interface_config>
-      <motetype_identifier>wismote2</motetype_identifier>
-    </mote>
-    <mote>
-      <breakpoints />
-      <interface_config>
-        org.contikios.cooja.interfaces.Position
-        <x>36.05984369318829</x>
-        <y>38.86622633354831</y>
-        <z>0.0</z>
-      </interface_config>
-      <interface_config>
-        org.contikios.cooja.mspmote.interfaces.MspMoteID
-        <id>11</id>
-      </interface_config>
-      <motetype_identifier>wismote2</motetype_identifier>
-    </mote>
-    <mote>
-      <breakpoints />
-      <interface_config>
-        org.contikios.cooja.interfaces.Position
-        <x>40.22598151190417</x>
-        <y>36.64416719781292</y>
-        <z>0.0</z>
-      </interface_config>
-      <interface_config>
-        org.contikios.cooja.mspmote.interfaces.MspMoteID
-        <id>12</id>
-      </interface_config>
-      <motetype_identifier>wismote2</motetype_identifier>
-    </mote>
-    <mote>
-      <breakpoints />
-      <interface_config>
-        org.contikios.cooja.interfaces.Position
-        <x>18.44391461717657</x>
-        <y>45.541181757309815</y>
-        <z>0.0</z>
-      </interface_config>
-      <interface_config>
-        org.contikios.cooja.mspmote.interfaces.MspMoteID
-        <id>13</id>
       </interface_config>
       <motetype_identifier>wismote2</motetype_identifier>
     </mote>
@@ -259,7 +203,7 @@
       <skin>org.contikios.cooja.plugins.skins.GridVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.TrafficVisualizerSkin</skin>
       <skin>org.contikios.cooja.plugins.skins.UDGMVisualizerSkin</skin>
-      <viewport>3.2520663520501665 0.0 0.0 3.2520663520501665 53.635395411222426 8.877180382228724</viewport>
+      <viewport>0.6302722461411799 0.0 0.0 0.6302722461411799 178.30450262763867 187.1804073063522</viewport>
     </plugin_config>
     <width>400</width>
     <z>1</z>
@@ -292,17 +236,13 @@
       <mote>6</mote>
       <mote>7</mote>
       <mote>8</mote>
-      <mote>9</mote>
-      <mote>10</mote>
-      <mote>11</mote>
-      <mote>12</mote>
       <showRadioRXTX />
       <showRadioHW />
       <showLEDs />
       <zoomfactor>500.0</zoomfactor>
     </plugin_config>
     <width>847</width>
-    <z>6</z>
+    <z>5</z>
     <height>166</height>
     <location_x>0</location_x>
     <location_y>233</location_y>
@@ -314,7 +254,7 @@
       <decorations>true</decorations>
     </plugin_config>
     <width>167</width>
-    <z>5</z>
+    <z>6</z>
     <height>160</height>
     <location_x>680</location_x>
     <location_y>0</location_y>
